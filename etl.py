@@ -7,6 +7,7 @@ import json
 
 
 def process_song_file(cur, filepath):
+    """Convert the song json file to a Dataframe and extract the song data into tables."""
     # open song file
     with open(filepath) as json_file:
         data = json.load(json_file)
@@ -26,6 +27,11 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    - Convert the log json file to a Dataframe and extract the log data into tables.
+    - Filter data by 'NextSong'.
+    - Transform the timestamp column to a datetime before extraction.
+    """
     # open log file
     logData_arr = []
     for line in open(filepath, 'r'):
@@ -81,6 +87,7 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """Iterate over files in filepath and process them with a given function."""
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -100,6 +107,7 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """Execute the ETL pipeline by connecting to the database and processing the data files."""
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
